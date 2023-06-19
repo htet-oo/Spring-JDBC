@@ -23,10 +23,12 @@
 			<div class="form-group mb-3 col-5">
 				<form:label path="description">Description</form:label>
 				<form:input path="description" class="form-control" placeholder="Enter Description"/>
+				<form:errors path="description"></form:errors>
 			</div>
 			<div class="form-group mb-3 col-5">
 				<form:label path="title">Title</form:label>
 				<form:input path="title" class="form-control" placeholder="Enter title"/>
+				<form:errors path="title"></form:errors>
 			</div>
 			
 			<button type="submit" class="btn btn-primary">Submit</button>

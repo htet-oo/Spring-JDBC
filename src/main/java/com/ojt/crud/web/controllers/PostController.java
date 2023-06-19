@@ -1,15 +1,13 @@
 package com.ojt.crud.web.controllers;
 
-import java.util.Iterator;
+
 import java.util.List;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,6 +25,7 @@ public class PostController {
 	@Autowired
 	private PostService postService;
 	
+	
 	@RequestMapping("/posts/list")
 	public ModelAndView getallPosts() {
 		ModelAndView mv = new ModelAndView();
@@ -43,11 +42,12 @@ public class PostController {
 	}
 	
 	@RequestMapping(value = "/posts/create/save", method = RequestMethod.POST)
-	public ModelAndView savePost(@ModelAttribute("saveForm") @Validated PostForm postForm,
+	public ModelAndView savePost(@ModelAttribute("saveForm") @Valid PostForm postForm,
 			 					 BindingResult result) {
 		ModelAndView mv = new ModelAndView();
 		if(result.hasErrors()) {
-			mv.setViewName("redirect:/posts/create");
+			mv.setViewName("posts/create");
+			return mv;
 		}
 		postService.save(postForm);
 		mv.setViewName("redirect:/posts/list");
@@ -59,17 +59,6 @@ public class PostController {
 	@RequestMapping("/posts/update")
 	public ModelAndView update(@RequestParam int updateObjId) {
 		ModelAndView mv = new ModelAndView();
-		
-		// Find Post From with id
-//		List<PostDto> postDtoList = this.postService.getAllPosts();
-//		for(int i = 0; i<postDtoList.size(); i++) {
-//			var post = postDtoList.get(i);
-//			if(post.getId() == updateObjId) {
-//				mv.addObject("updateForm",new PostForm(post));
-//				System.out.println(post.getTitle());
-//				
-//			}
-//		}
 		PostDto postDto = postService.getPostById(updateObjId);
 		System.out.println(postDto.getDescription());
 		mv.addObject("updateForm",new PostForm(postDto));
@@ -77,12 +66,14 @@ public class PostController {
 	}
 	
 	@RequestMapping(value = "/posts/edit", method = RequestMethod.POST)
-	public ModelAndView editPost(@ModelAttribute("updateForm") PostForm postForm) {
+	public ModelAndView editPost(@ModelAttribute("updateForm") @Valid PostForm postForm,
+								BindingResult result) {
 		ModelAndView mv = new ModelAndView();
-		System.out.println(postForm.getDescription());
-		System.out.println("Hello Update");
+		if(result.hasErrors()) {
+			mv.setViewName("posts/update");
+			return mv;
+		}
 		postService.updatePost(postForm);
-		System.out.println(postForm.getId());
 		mv.setViewName("redirect:/posts/list");
 		return mv;
 	}
@@ -96,6 +87,8 @@ public class PostController {
 		mv.setViewName("redirect:/posts/list");
 		return mv;
 	}
+
+
 	
 
 	
