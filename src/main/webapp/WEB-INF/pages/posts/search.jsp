@@ -17,7 +17,7 @@
 <body>
 	<div class="container py-5">
 		<div class="d-flex justify-content-between">
-			<h3>Post List</h3>
+			<h3>Post Search</h3>
 			<div>
 				<c:url var="searchPost" value="/posts/search" />
 				<form action="${searchPost}" method="GET" class="d-flex">

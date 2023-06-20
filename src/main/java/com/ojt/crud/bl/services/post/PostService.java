@@ -9,6 +9,7 @@ import com.ojt.crud.web.form.PostForm;
 public interface PostService {
 	List<PostDto> getAllPosts();
 	
+	List<PostDto> searchPosts(String search);
 	void save(PostForm postForm);
 
     void deletePost(int id);
@@ -16,4 +17,5 @@ public interface PostService {
     void updatePost(PostForm postForm);
     
     PostDto getPostById(int id);
+    
 }

@@ -28,7 +28,7 @@ public class PostController {
 	
 	@RequestMapping("/posts/list")
 	public ModelAndView getallPosts() {
-		ModelAndView mv = new ModelAndView();
+		ModelAndView mv = new ModelAndView("postListView");
 		List<PostDto> postDtoList = this.postService.getAllPosts();
 		mv.addObject("posts", postDtoList);
 		return mv;
@@ -36,7 +36,7 @@ public class PostController {
 	
 	@RequestMapping("/posts/create")
 	public ModelAndView create() {
-		ModelAndView mv = new ModelAndView();
+		ModelAndView mv = new ModelAndView("postCreateView");
 		mv.addObject("saveForm",new PostForm());
 		return mv;
 	}
@@ -54,11 +54,9 @@ public class PostController {
 		return mv;
 	}
 	
-	
-	
 	@RequestMapping("/posts/update")
 	public ModelAndView update(@RequestParam int updateObjId) {
-		ModelAndView mv = new ModelAndView();
+		ModelAndView mv = new ModelAndView("postUpdateView");
 		PostDto postDto = postService.getPostById(updateObjId);
 		System.out.println(postDto.getDescription());
 		mv.addObject("updateForm",new PostForm(postDto));
@@ -80,11 +78,19 @@ public class PostController {
 	
 	
 	
-	@RequestMapping(value = "/posts/delete")
+	@RequestMapping("/posts/delete")
 	public ModelAndView deletePost(@RequestParam int deleteId) {
-		ModelAndView mv = new ModelAndView();
+		ModelAndView mv = new ModelAndView("postDeleteView");
 		postService.deletePost(deleteId);
 		mv.setViewName("redirect:/posts/list");
+		return mv;
+	}
+	
+	@RequestMapping("/posts/search")
+	public ModelAndView searchPost(@RequestParam("search") String search) {
+		ModelAndView mv = new ModelAndView("postSearchView");
+		List<PostDto> postDtoList = this.postService.searchPosts(search);
+		mv.addObject("posts", postDtoList);
 		return mv;
 	}
 

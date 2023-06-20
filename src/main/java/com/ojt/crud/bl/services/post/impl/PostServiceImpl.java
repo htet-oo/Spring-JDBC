@@ -80,5 +80,21 @@ public class PostServiceImpl implements PostService {
 		
 		return new PostDto(postData);
 	}
+
+	@Override
+	public List<PostDto> searchPosts(String search) {
+		String sql = "SELECT * FROM posts WHERE title = ? OR description = ?";
+		@SuppressWarnings("deprecation")
+		List<Post> postList = jdbcTemplate.query(sql, new Object[]{search,search},(rs,rowNum) -> {
+            Post post = new Post();
+            post.setId(rs.getInt("id"));
+            post.setTitle(rs.getString("title"));
+            post.setDescription(rs.getString("description"));
+            return post;
+		});
+		return postList.stream().map(obj -> new PostDto(obj)).toList();
+	}
+	
+	
 }
 

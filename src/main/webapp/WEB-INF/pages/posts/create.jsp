@@ -17,7 +17,7 @@
 </head>
 <body>
 	<div class="container py-5">
-		<h3>Post List</h3>
+		<h3>Post Create</h3>
 		<c:url value="/posts/create/save" var="createDb"></c:url>
 		<form:form method="POST" action="${createDb}" modelAttribute="saveForm">
 			<div class="form-group mb-3 col-5">
